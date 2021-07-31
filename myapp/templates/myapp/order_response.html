@@ -1,0 +1,28 @@
+{% extends 'myapp/base.html' %}
+{% block body_block %}
+    <hr />
+    {% if courses %}
+        <h2>You placed the following order</h2>
+        <h3>{{ order }}</h3>
+        <table>
+            <tr>
+                <th>Course</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+                {% for course in courses %}
+                    <tr>
+                        <td> {{course.title}} </td>
+                        <td> {{ course.topic }} </td>
+                        <td> {{ course.price }} </td>
+                    </tr>
+                {% endfor %}
+        </table>
+
+        <h3>
+            <a href="{% url 'myapp:place_order' %}">Place a new Order</a>
+        </h3>
+    {% else %}
+        <strong>There are no available courses!</strong>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'myapp/base.html' %}
+{% block myhdg %}
+    {% if first_name or last_name %}
+        Hello {{ first_name }} {{ last_name }}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+{% block body_block %}
+    {% if errors %}
+        <ul class="error__list">
+            {% for error in errors %}
+                <li class="error__list__item">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+
+        {% if courses %}
+            <h3>List of Courses registered in</h3>
+            <table>
+                <tr>
+                    <th>Course</th>
+                    <th>Price</th>
+                </tr>
+                {% for course in courses %}
+                    <tr>
+                        <td> {{ course.title }} </td>
+                        <td> {{ course.price }} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <strong>No courses registered in!</strong>
+        {% endif %}
+
+        {% if interested_in %}
+            <h3>List of Topics interested in</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Length</th>
+                </tr>
+                {% for topic in interested_in %}
+                    <tr>
+                        <td> {{ topic.name }} </td>
+                        <td> {{ topic.length }} </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <strong>No topics interested in!</strong>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Details for {{ topic.name }}</title>
+</head>
+<body>
+    <h2>{{ topic.name }} - {{ topic.length }} weeks</h2>
+    {% if course_list %}
+        <h3>List of Courses in the topic</h3>
+        <table>
+            <tr>
+                <th>Course</th>
+                <th>Price</th>
+            </tr>
+                {% for course in course_list %}
+                    <tr>
+                        <td> {{course.title}} </td>
+                        <td> {{ course.price }} </td>
+                    </tr>
+                {% endfor %}
+        </table>
+    {% else %}
+        <strong>There are no available topics!</strong>
+    {% endif %}
+
+    <p><a href="/myapp">Go Home</a></p>
+    <p><a href="{% url 'myapp:index' %}">Go Home</a></p>
+</body>
+</html>

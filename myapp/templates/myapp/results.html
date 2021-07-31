@@ -1,0 +1,31 @@
+{#{% extends 'myapp/base.html' %}#}
+{% extends "myapp/findcourses.html" %}
+{% block myhdg %}
+    {% if user.is_authenticated %}
+        Hello {{ name|default:user.get_username }}
+    {% else %}
+        Hello {{ name|default:"User" }}
+    {% endif %}
+{% endblock %}
+{% block results %}
+    <hr />
+    {% if course_list %}
+        <h3>List of Courses taking {{ length|default:"any number of" }} weeks under ${{ max_price }}</h3>
+        <table>
+            <tr>
+                <th>Course</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+                {% for course in course_list %}
+                    <tr>
+                        <td> {{course.title}} </td>
+                        <td> {{ course.topic }} </td>
+                        <td> {{ course.price }} </td>
+                    </tr>
+                {% endfor %}
+        </table>
+    {% else %}
+        <strong>There are no available courses!</strong>
+    {% endif %}
+{% endblock %}

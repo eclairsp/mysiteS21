@@ -1,16 +1,17 @@
 {% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %}
 {% block body_block %}
     <h2>Add a review</h2>
     {% if errors %}
-        <ul class="error__list">
+        <ul class="list-group list-group-flush">
         {% for error in errors %}
-            <li class="error__list__item">{{ error }}</li>
+            <li class="btn btn-outline-danger">{{ error }}</li>
         {% endfor %}
         </ul>
     {% endif %}
     <form class="review__form" action="{% url 'myapp:review' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" name="submit" value="Add Review"/>
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-primary" name="submit" value="Add Review"/>
     </form>
 {% endblock %}

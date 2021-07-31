@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
 from .models import Topic, Course, Student
-from .forms import SearchForm, OrderForm, ReviewForm
+from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm
 
 
 # Create your views here.
@@ -155,7 +155,7 @@ def user_login(request):
                 request.session['last_login'] = now().isoformat()
                 request.session.set_expiry(60 * 60)
                 # return redirect("myapp:index")
-                return HttpResponseRedirect(reverse('myapp:index'))
+                return HttpResponseRedirect(reverse('myapp:myaccount'))
             else:
                 return HttpResponse('Your account is disabled.')
         else:
@@ -173,6 +173,19 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('myapp:index')
+
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        print(form.cleaned_data["interested_in"])
+        if form.is_valid():
+            return HttpResponse("ok")
+        else:
+            return HttpResponse(form.errors)
+    else:
+        form = RegisterForm()
+        return render(request, "myapp/register.html", {"form": form})
 
 
 @login_required()

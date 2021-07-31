@@ -1,4 +1,5 @@
 {% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %}
 {% block body_block %}
     <form class="login__form" action="{% url 'myapp:login' %}" method="post">
         {% csrf_token %}
@@ -14,7 +15,7 @@
 {#        <p>#}
 {#            <input type="password" name="password" class="" id="inputPassword">#}
 {#        </p>#}
-        {{ form.as_p }}
-        <input type="submit" name="submit" value="Login"/>
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-primary" name="submit" value="Login"/>
     </form>
 {% endblock %}

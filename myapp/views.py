@@ -7,6 +7,8 @@ from django.utils.timezone import now
 from .models import Topic, Course, Student
 from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm
 
+from datetime import datetime
+
 
 # Create your views here.
 # def index(request):
@@ -28,8 +30,8 @@ from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm
 
 
 def index(request):
-    last_login = request.session[
-        'last_login'] if 'last_login' in request.session else "Your last login was more than one hour ago"
+    last_login = "at {} UTC".format(datetime.fromisoformat(request.session[
+        'last_login'])) if 'last_login' in request.session else "more than one hour ago"
     top_list = Topic.objects.all().order_by('id')[:10]
     return render(request, 'myapp/index.html', {'top_list': top_list, 'last_login': last_login})
 
@@ -68,13 +70,17 @@ def about(request):
 
 def details(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
-    course_list = Course.objects.filter(topic__exact=topic)
-    return render(request, "myapp/details.html", {'topic': topic, 'course_list': course_list})
+    return render(request, "myapp/details.html",
+                  {'topic': topic, 'course_list': topic.courses.all(), 'students': topic.student_set.all()})
 
 
 def course(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
-    return render(request, "myapp/course.html", {"course": course, "reviews": course.review_set.all(), "students": course.student_set.all()})
+    return render(request, "myapp/course.html",
+                  {"course": course, "reviews": course.review_set.all(), "students": course.student_set.all()})
+
+
+# topic = Topic.objects.get(id==1).
 
 
 def findcourses(request):
@@ -132,43 +138,39 @@ def review(request):
         form = ReviewForm(request.POST)
         if form.is_valid():
             review_form = form.save(commit=False)
-            rating = review_form.rating
             course = review_form.course
-            if 1 <= rating <= 5:
-                review_form.save()
-                course.num_reviews = course.num_reviews + 1
-                course.save()
-                return redirect("myapp:index")
-            else:
-                return render(request, "myapp/review.html",
-                              {'form': form, 'name': ' ', "errors": ["You must enter a rating between 1 and 5!"]})
+            review_form.save()
+            course.num_reviews = course.num_reviews + 1
+            course.save()
+            return redirect("myapp:index")
         else:
-            return render(request, "myapp/review.html", {'form': form, 'name': ' ', "errors": ["Check again"]})
+            return render(request, "myapp/review.html", {'form': form, "errors": "Check again"})
     else:
         form = ReviewForm()
-        return render(request, "myapp/review.html", {'form': form, 'name': ' '})
+        return render(request, "myapp/review.html", {'form': form})
 
 
 def user_login(request):
     if request.method == "POST":
-        username = request.POST["username"]
+        form = AuthenticationForm(data=request.POST)
+        username = request.POST['username']
         password = request.POST["password"]
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                request.session['last_login'] = now().isoformat()
-                request.session.set_expiry(60 * 60)
-                # return redirect("myapp:index")
-                return HttpResponseRedirect(reverse('myapp:myaccount'))
-            else:
-                return HttpResponse('Your account is disabled.')
+        if form.is_valid():
+            user = authenticate(username=username, password=password)
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    request.session['last_login'] = now().isoformat()
+                    request.session.set_expiry(60 * 60)
+                    # return redirect("myapp:index")
+                    return redirect('myapp:index')
+                else:
+                    return HttpResponse('Your account is disabled.')
         else:
-            return HttpResponse("Invalid login details.")
+            return render(request, "myapp/login.html", {'form': form, "errors": " "})
     else:
         '''
         used the built in django login form.
-        otherwise can uncomment the template for a custom form as well.
         '''
         form = AuthenticationForm()
         return render(request, "myapp/login.html", {'form': form})
@@ -183,11 +185,23 @@ def user_logout(request):
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
-        print(form.cleaned_data["interested_in"])
         if form.is_valid():
-            return HttpResponse("ok")
+            form.save()
+            form.save_m2m()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            print(user)
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('myapp:myaccount')
+                else:
+                    return HttpResponse('Your account is disabled.')
+            else:
+                return HttpResponse("Cannot login currently. Try again!")
         else:
-            return HttpResponse(form.errors)
+            return render(request, "myapp/register.html", {"form": form})
     else:
         form = RegisterForm()
         return render(request, "myapp/register.html", {"form": form})

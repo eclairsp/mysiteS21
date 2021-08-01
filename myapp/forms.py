@@ -1,6 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django.contrib.auth.forms import UserCreationForm
 from myapp.models import Order, Review, Student
 
 
@@ -34,8 +35,9 @@ class ReviewForm(forms.ModelForm):
                   'rating': 'Rating: An integer between 1 (worst) and 5 (best)'}
 
 
-class RegisterForm(forms.ModelForm):
+class RegisterForm(UserCreationForm):
     class Meta:
         model = Student
-        fields = ["username", "password", "first_name", "last_name", "address", "interested_in"]
-        widgets = {"interested_in": forms.RadioSelect(), "password": forms.PasswordInput()}
+        fields = ["username", "email", "first_name", "last_name", "address", "interested_in"]
+        widgets = {"interested_in": forms.CheckboxSelectMultiple(), 'email': forms.EmailInput()}
+        labels = {'address': 'City'}

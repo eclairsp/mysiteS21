@@ -3,15 +3,14 @@
 {% block body_block %}
     <h2>Add a review</h2>
     {% if errors %}
-        <ul class="list-group list-group-flush">
-        {% for error in errors %}
-            <li class="btn btn-outline-danger">{{ error }}</li>
-        {% endfor %}
-        </ul>
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error</h4>
+            <h5 class="text-danger">{{ errors }}</h5>
+        </div>
     {% endif %}
     <form class="review__form" action="{% url 'myapp:review' %}" method="post">
         {% csrf_token %}
-        {% crispy form %}
+        {{ form|crispy }}
         <input type="submit" class="btn btn-primary" name="submit" value="Add Review"/>
     </form>
 {% endblock %}

@@ -8,15 +8,20 @@
             <tr>
                 <th>Course</th>
                 <th>Category</th>
-                <th>Price</th>
+                <th>Price (in $)</th>
             </tr>
             {% for course in courses %}
                 <tr>
-                    <td> {{ course.title }} </td>
+                    <td> <a href="{% url "myapp:course" course_id=course.id %}">{{ course.title }}</a> </td>
                     <td> {{ course.topic }} </td>
                     <td> {{ course.price }} </td>
                 </tr>
             {% endfor %}
+                <tr>
+                    <td>Total</td>
+                    <td></td>
+                    <td> {{ order.total_cost }} </td>
+                </tr>
         </table>
     {% else %}
         <strong>No courses orderder!</strong>

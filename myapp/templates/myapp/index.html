@@ -1,18 +1,21 @@
 {% extends 'myapp/base.html' %}
 {#{%  block myhdg %} Hello Prabhjyot {%  endblock %}#}
+{% load type %}
 {% block body_block %}
     {% if top_list %}
         <h2>List of Topics</h2>
         <ol class="list-group list-group-flush">
             {% for top in top_list %}
-                <li class="list-group-item"> <a href="{% url 'myapp:details' topic_id=top.id %}">{{ top.name }}</a></li>
+                <li class="list-group-item"><a href="{% url 'myapp:details' topic_id=top.id %}">{{ top.name }}</a></li>
             {% endfor %}
         </ol>
     {% else %}
         <strong>There are no available topics!</strong>
     {% endif %}
     {% if last_login %}
-        <h3>{{ last_login }}</h3>
+        <div class="alert alert-info mt-2" role="alert">
+            Your last login was {{ last_login }}
+        </div>
     {% endif %}
 
 {% endblock %}

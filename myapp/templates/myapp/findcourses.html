@@ -1,10 +1,10 @@
 {% extends 'myapp/base.html' %}
 {% load crispy_forms_tags %}
 {% block body_block %}
-    <form class="search--form" action="{% url 'myapp:find_courses' %}" method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" class="btn btn-primary" name="submit1" value="Find Courses"/>
-    </form>
-    {% block results %}  {% endblock %}
+            <form class="search--form" action="{% url 'myapp:find_courses' %}" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" class="btn btn-primary" name="submit1" value="Find Courses"/>
+            </form>
+            {% block results %}  {% endblock %}
 {% endblock %}

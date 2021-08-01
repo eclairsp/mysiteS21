@@ -3,11 +3,12 @@
 {% block body_block %}
     <h2>This is an E-learning Website! Search our Topics to find all available Courses</h2>
     {% if about_visits %}
-        <h3>You have visited this page {{ about_visits }} times!</h3>
-    {% endif %}
-    {% if request.COOKIES.about_visits %}
-        <h3>You have visited this page {{ request.COOKIES.about_visits|add:"1" }} times! - from template</h3>
+        <div class="alert alert-info" role="alert">
+            You have visited this page <strong class="lead">{{ about_visits }}</strong> times!
+        </div>
     {% else %}
-        <h3>Your first visit to the page!</h3>
+        <div class="alert alert-info" role="alert">
+            Your first visit to the page!
+        </div>
     {% endif %}
 {% endblock %}

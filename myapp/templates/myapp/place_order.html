@@ -1,6 +1,7 @@
 {% extends 'myapp/base.html' %}
 {% load crispy_forms_tags %}
 {% block body_block %}
+
     <h2>Place an order</h2>
     <form class="order__form" action="{% url 'myapp:place_order' %}" method="post">
         {% csrf_token %}

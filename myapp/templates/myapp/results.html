@@ -14,13 +14,13 @@
         <table class="table">
             <tr>
                 <th>Course</th>
-                <th>Category</th>
+                <th>Topic</th>
                 <th>Price</th>
             </tr>
                 {% for course in course_list %}
                     <tr>
                         <td> <a href="{% url "myapp:course" course_id=course.id %}">{{course.title}}</a> </td>
-                        <td> {{ course.topic }} </td>
+                        <td> <a href="{% url "myapp:details" topic_id=course.topic_id %}"> {{ course.topic }} </a> </td>
                         <td> {{ course.price }} </td>
                     </tr>
                 {% endfor %}

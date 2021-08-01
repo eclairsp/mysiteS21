@@ -1,6 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+
+
+def enforce_rating(rating):
+    if not 1 <= rating <= 5:
+        raise ValidationError("You must enter a rating between 1 and 5!")
 
 
 # Create your models here.
@@ -63,7 +70,7 @@ class Order(models.Model):
 class Review(models.Model):
     reviewer = models.EmailField()
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField()
+    rating = models.PositiveIntegerField(validators=[enforce_rating])
     comments = models.TextField(blank=True)
     date = models.DateField(default=now)
 

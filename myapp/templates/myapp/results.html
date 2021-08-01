@@ -19,7 +19,7 @@
             </tr>
                 {% for course in course_list %}
                     <tr>
-                        <td> {{course.title}} </td>
+                        <td> <a href="{% url "myapp:course" course_id=course.id %}">{{course.title}}</a> </td>
                         <td> {{ course.topic }} </td>
                         <td> {{ course.price }} </td>
                     </tr>

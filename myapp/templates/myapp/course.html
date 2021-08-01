@@ -1,0 +1,42 @@
+{% extends 'myapp/base.html' %}
+{% block body_block %}
+    <h2 class="mt-2">{{ course.title }}</h2>
+    <h2><span class="badge bg-primary">${{ course.price }}</span></h2>
+
+    {% if reviews %}
+        <h3>Reviews for the course</h3>
+        <table class="table">
+            <tr>
+                <th>Rating</th>
+                <th>Comments</th>
+                <th>User</th>
+            </tr>
+            {% for review in reviews %}
+                <tr>
+                    <td> {{ review.rating }} </td>
+                    <td> {{ review.comments|default:"no comments given" }} </td>
+                    <td> {{ review.reviewer }} </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h3>No reviews yet!</h3>
+        <h4><span class="badge bg-light"><a href="{% url "myapp:review" %}">Add a review.</a></span></h4>
+    {% endif %}
+
+    {% if students %}
+        <h3>List of Students registered in the course</h3>
+        <div class="row">
+            <div class="col-3">
+                <ol class="list-group list-group-flush">
+                    {% for student in students %}
+                        <li class="list-group-item">{{ student.first_name }} {{ student.last_name }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+
+    {% else %}
+        <h3>No students registered yet!</h3>
+    {% endif %}
+{% endblock %}

@@ -1,3 +1,19 @@
+.container-main {
+    margin-top: 80px;
+}
+
 .navbar {
     font-size: 1.5em;
+}
+
+.navbar-text {
+    color: #FF5252 !important;
+}
+
+h1, h2, h3 {
+    color: #FF5252;
+}
+
+th {
+    font-size: 1.2em;
 }

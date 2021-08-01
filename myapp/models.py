@@ -51,7 +51,7 @@ class Order(models.Model):
     def __str__(self):
         status = str(self.ORD_STATUS_CHOICES[self.order_status][1])
         return "{0}'s order for {1} courses at ${2} is {3}".format(self.student.first_name, len(self.courses.all()),
-                                                         self.total_cost(), status.lower())
+                                                                   self.total_cost(), status.lower())
 
     def total_cost(self):
         return sum(course.price if course.price else 0 for course in self.courses.all())

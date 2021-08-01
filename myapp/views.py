@@ -72,6 +72,11 @@ def details(request, topic_id):
     return render(request, "myapp/details.html", {'topic': topic, 'course_list': course_list})
 
 
+def course(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    return render(request, "myapp/course.html", {"course": course, "reviews": course.review_set.all(), "students": course.student_set.all()})
+
+
 def findcourses(request):
     if request.method == "POST":
         unbound_form = SearchForm()

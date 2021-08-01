@@ -11,7 +11,7 @@
     {% endif %}
     <form class="review__form" action="{% url 'myapp:review' %}" method="post">
         {% csrf_token %}
-        {{ form|crispy }}
+        {% crispy form %}
         <input type="submit" class="btn btn-primary" name="submit" value="Add Review"/>
     </form>
 {% endblock %}

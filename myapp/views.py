@@ -226,6 +226,6 @@ def myaccount(request):
                           {'first_name': first_name, 'last_name': last_name, 'courses': courses,
                            'interested_in': interested_in})
         else:
-            return render(request, "myapp/myaccount.html", {'errors': ['You are not a registered student!']})
+            return render(request, "myapp/myaccount.html", {'error': 'You are not a registered student!'})
     except Student.DoesNotExist:
-        return render(request, "myapp/myaccount.html", {'errors': ['You are not a registered student!']})
+        return render(request, "myapp/myaccount.html", {'error': 'You are not a registered student!'})

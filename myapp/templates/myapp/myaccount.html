@@ -7,14 +7,11 @@
     {% endif %}
 {% endblock %}
 {% block body_block %}
-    {% if errors %}
-        <ul class="list-group list-group-flush">
-            {% for error in errors %}
-                <li class="btn btn-outline-danger">{{ error }}</li>
-            {% endfor %}
-        </ul>
+    {% if error %}
+        <div class="alert alert-danger mb-0" role="alert">
+            <h3 class="text-danger">{{ error }}</h3>
+        </div>
     {% else %}
-
         {% if courses %}
             <h3>List of Courses registered in</h3>
             <table class="table">
@@ -24,7 +21,7 @@
                 </tr>
                 {% for course in courses %}
                     <tr>
-                        <td> <a href="{% url "myapp:course" course_id=course.id %}">{{ course.title }}</a></td>
+                        <td><a href="{% url "myapp:course" course_id=course.id %}">{{ course.title }}</a></td>
                         <td> {{ course.price }} </td>
                     </tr>
                 {% endfor %}
@@ -33,7 +30,6 @@
             <div class="alert alert-warning" role="alert">
                 No courses registered in!
             </div>
-
         {% endif %}
 
         {% if interested_in %}
@@ -45,7 +41,7 @@
                 </tr>
                 {% for topic in interested_in %}
                     <tr>
-                        <td> <a href="{% url "myapp:details" topic_id=topic.id %}"> {{ topic.name }} </a> </td>
+                        <td><a href="{% url "myapp:details" topic_id=topic.id %}"> {{ topic.name }} </a></td>
                         <td> {{ topic.length }} </td>
                     </tr>
                 {% endfor %}

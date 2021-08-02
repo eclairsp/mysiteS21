@@ -1,9 +1,17 @@
+html {
+    color: #101010 !important;
+}
+
 .container-main {
     margin-top: 80px;
 }
 
 .navbar {
     font-size: 1.5em;
+}
+
+.navbar-brand {
+    font-size: 1.7em!important;
 }
 
 .navbar-text {
@@ -16,4 +24,8 @@ h1, h2, h3 {
 
 th {
     font-size: 1.2em;
+}
+
+.bi-star-fill, .bi-star {
+    color: #FF5252 !important;
 }

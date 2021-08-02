@@ -12,11 +12,14 @@
     {% if course_list %}
         <h3>List of Courses taking {{ length|default:"any number of" }} weeks under ${{ max_price }}</h3>
         <table class="table">
-            <tr>
-                <th>Course</th>
-                <th>Topic</th>
-                <th>Price</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Topic</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
                 {% for course in course_list %}
                     <tr>
                         <td> <a href="{% url "myapp:course" course_id=course.id %}">{{course.title}}</a> </td>
@@ -24,6 +27,7 @@
                         <td> {{ course.price }} </td>
                     </tr>
                 {% endfor %}
+            </tbody>
         </table>
     {% else %}
         <strong>There are no available courses!</strong>

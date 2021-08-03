@@ -41,3 +41,7 @@ class RegisterForm(UserCreationForm):
         fields = ["username", "email", "first_name", "last_name", "address", "interested_in"]
         widgets = {"interested_in": forms.CheckboxSelectMultiple(), 'email': forms.EmailInput()}
         labels = {'address': 'City'}
+
+
+class ForgetPasswordForm(forms.Form):
+    email = forms.EmailField(max_length=100, label='Email address of the account:')

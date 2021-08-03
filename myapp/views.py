@@ -4,9 +4,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
-from .models import Topic, Course, Student
-from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm
-
+from .models import Topic, Course, Student, User
+from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm, ForgetPasswordForm
+import hashlib
+from django.core.mail import send_mail
+from django.conf import settings
 from datetime import datetime
 
 
@@ -229,3 +231,50 @@ def myaccount(request):
             return render(request, "myapp/myaccount.html", {'error': 'You are not a registered student!'})
     except Student.DoesNotExist:
         return render(request, "myapp/myaccount.html", {'error': 'You are not a registered student!'})
+
+
+def forget_password(request):
+
+    if request.method == "POST":
+        form = ForgetPasswordForm(request.POST)
+        if form.is_valid():
+            request_email = form.cleaned_data['email']
+            print(request_email)
+
+            try:
+                target_user = User.objects.get(email__exact=request_email)
+                # generate string for hashing
+                random_string = request_email + datetime.now().isoformat()
+
+                # get first 16 chars from the hashed value
+                hash_password = hashlib.sha224(random_string.encode()).hexdigest()[:16]
+
+                email_subject = 'Password Reset'
+                email_message = "Dear " + target_user.username + ",\n\n"\
+                                + "Your new password is:\n"\
+                                + hash_password + "\n"\
+                                + "Please log in and change your password.\n"\
+                                + "Have a very nice day!\n\n"\
+                                + "Best Regards,\n"\
+                                + "Comp8347 Group 9"
+                sender = 'noreply@comp8347group9project.com'
+                receiver_list = [request_email]
+
+                send_mail(subject=email_subject,
+                          message=email_message,
+                          from_email=settings.EMAIL_HOST_USER,
+                          recipient_list=receiver_list,
+                          fail_silently=False)
+                target_user.set_password(hash_password)
+                target_user.save()
+
+                return HttpResponse("Password has been sent to the email")
+            except AttributeError:
+                return HttpResponse("Cannot find user with this email. Try again!")
+
+        return HttpResponse("Invalid form. Try again!")
+    else:
+        form = ForgetPasswordForm()
+        help_text = 'Please enter the email of your account and we will send you a new password.'
+        return render(request, "myapp/forget_password.html", {"form": form, 'helptext': help_text})
+

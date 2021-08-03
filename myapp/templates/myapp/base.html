@@ -68,11 +68,13 @@
                 {% endif %}
             </ul>
         </div>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <span class="navbar-brand h1">LearnO</span>
+
     </div>
 </nav>
 <div class="container-fluid container-main d-flex align-items-center justify-content-center mb-3 rounded-circle">
@@ -82,7 +84,7 @@
                 <span class="greeting-text h1">
                     {% block myhdg %}
                         Hello
-                        {{ user.get_username|default:"User" }}
+                        {{ user.get_full_name|default:"User" }}
                     {% endblock %}
                 </span>
             </div>

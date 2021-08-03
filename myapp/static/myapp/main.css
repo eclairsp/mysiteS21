@@ -1,5 +1,19 @@
 html {
-    color: #101010 !important;
+    background: linear-gradient(#ebf4f5, #b5c6e0);
+    background-size: cover;
+    background-size: 400% 400%;
+
+    animation: AnimationName 1s ease infinite;
+    min-height: 100vh;
+}
+body {
+    background: transparent !important;
+}
+
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
 
 .container-main {
@@ -10,11 +24,22 @@ html {
     font-size: 1.5em;
 }
 
-.navbar-brand {
-    font-size: 1.7em!important;
+.navbar-nav {
+    margin-right: auto !important;
 }
 
-.navbar-text {
+.navbar-toggler {
+    margin-right: 10px;
+}
+
+.navbar-brand {
+    font-size: 1.7em!important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    color: #FF5252 !important;
+}
+
+.greeting-text {
     color: #FF5252 !important;
 }
 
@@ -29,3 +54,6 @@ th {
 .bi-star-fill, .bi-star {
     color: #FF5252 !important;
 }
+@media (max-width: 991.98px) { .navbar-nav {
+    flex-direction: column-reverse !important;
+} }

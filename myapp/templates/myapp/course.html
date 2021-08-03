@@ -12,7 +12,7 @@
     {#    {% endif %}#}
     {% if students %}
         <h3>Students registered in the course</h3>
-        <ol class="list-group list-group-flush">
+        <ol class="list-group">
             {% for student in students %}
                 <li class="list-group-item">{{ student.first_name }} {{ student.last_name }}</li>
             {% endfor %}

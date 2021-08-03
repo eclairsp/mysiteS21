@@ -4,7 +4,7 @@
 {% block body_block %}
     {% if top_list %}
         <h2>List of Topics</h2>
-        <ol class="list-group list-group-flush">
+        <ol class="list-group">
             {% for top in top_list %}
                 <li class="list-group-item"><a href="{% url 'myapp:details' topic_id=top.id %}">{{ top.name }}</a></li>
             {% endfor %}

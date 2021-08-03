@@ -15,16 +15,20 @@
         {% if courses %}
             <h3>List of Courses registered in</h3>
             <table class="table">
-                <tr>
-                    <th>Course</th>
-                    <th>Price</th>
-                </tr>
-                {% for course in courses %}
+                <thead>
                     <tr>
-                        <td><a href="{% url "myapp:course" course_id=course.id %}">{{ course.title }}</a></td>
-                        <td> {{ course.price }} </td>
+                        <th>Course</th>
+                        <th>Price</th>
                     </tr>
-                {% endfor %}
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                        <tr>
+                            <td><a href="{% url "myapp:course" course_id=course.id %}">{{ course.title }}</a></td>
+                            <td> {{ course.price }} </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         {% else %}
             <div class="alert alert-warning" role="alert">
@@ -35,16 +39,20 @@
         {% if interested_in %}
             <h3>List of Topics interested in</h3>
             <table class="table">
-                <tr>
-                    <th>Name</th>
-                    <th>Length</th>
-                </tr>
-                {% for topic in interested_in %}
+                <thead>
                     <tr>
-                        <td><a href="{% url "myapp:details" topic_id=topic.id %}"> {{ topic.name }} </a></td>
-                        <td> {{ topic.length }} </td>
+                        <th>Name</th>
+                        <th>Length</th>
                     </tr>
-                {% endfor %}
+                </thead>
+                <tbody>
+                    {% for topic in interested_in %}
+                        <tr>
+                            <td><a href="{% url "myapp:details" topic_id=topic.id %}"> {{ topic.name }} </a></td>
+                            <td> {{ topic.length }} </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         {% else %}
             <div class="alert alert-warning" role="alert">

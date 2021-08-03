@@ -165,17 +165,24 @@ def user_login(request):
                     request.session['last_login'] = now().isoformat()
                     request.session.set_expiry(60 * 60)
                     # return redirect("myapp:index")
-                    return redirect('myapp:index')
+                    response = redirect('myapp:index')
                 else:
-                    return HttpResponse('Your account is disabled.')
+                    response = HttpResponse('Your account is disabled.')
         else:
-            return render(request, "myapp/login.html", {'form': form, "errors": " "})
+            response = render(request, "myapp/login.html", {'form': form, "errors": " "})
     else:
         '''
         used the built in django login form.
         '''
         form = AuthenticationForm()
-        return render(request, "myapp/login.html", {'form': form})
+        response = render(request, "myapp/login.html", {'form': form})
+
+    # if need to display forget password msg
+    if "forgetPassword_msg" in request.COOKIES:
+        # even deleted, it will still appear once
+        response.delete_cookie("forgetPassword_msg")
+
+    return response
 
 
 @login_required
@@ -268,9 +275,14 @@ def forget_password(request):
                 target_user.set_password(hash_password)
                 target_user.save()
 
-                return HttpResponse("Password has been sent to the email")
-            except AttributeError:
-                return HttpResponse("Cannot find user with this email. Try again!")
+                response = redirect("myapp:login")
+                response.set_cookie("forgetPassword_msg", "New password sent to email")
+                return response
+
+            except:
+                response = redirect("myapp:login")
+                response.set_cookie("forgetPassword_msg", "Invalid email")
+                return response
 
         return HttpResponse("Invalid form. Try again!")
     else:

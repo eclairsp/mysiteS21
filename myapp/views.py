@@ -241,6 +241,7 @@ def myaccount(request):
 
 
 def forget_password(request):
+    help_text = 'Please enter the email of your account and we will send you a new password.'
 
     if request.method == "POST":
         form = ForgetPasswordForm(request.POST)
@@ -280,13 +281,13 @@ def forget_password(request):
                 return response
 
             except:
-                response = redirect("myapp:login")
-                response.set_cookie("forgetPassword_msg", "Invalid email")
+                response = render(request, "myapp/forget_password.html", {"form": form, 'helptext': help_text, "local_forgetPassword_msg": "Invalid email"})
                 return response
 
-        return HttpResponse("Invalid form. Try again!")
+        response = render(request, "myapp/forget_password.html", {"form": form, 'helptext': help_text, "local_forgetPassword_msg": "Invalid form. Try again!"})
+        return response
+
     else:
         form = ForgetPasswordForm()
-        help_text = 'Please enter the email of your account and we will send you a new password.'
         return render(request, "myapp/forget_password.html", {"form": form, 'helptext': help_text})
 

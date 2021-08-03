@@ -5,7 +5,6 @@ from django.utils.timezone import now
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from io import BytesIO
-from PIL import Image
 
 
 def enforce_rating(rating):

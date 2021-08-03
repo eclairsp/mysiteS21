@@ -13,5 +13,6 @@ urlpatterns = [
     path(r'register', views.register, name='register'),
     path(r'myaccount', views.myaccount, name='myaccount'),
     path(r'course/<course_id>', views.course, name='course'),
+    path(r'forget_password', views.forget_password, name='forget_password'),
     path(r'<topic_id>', views.details, name='details'),
 ]

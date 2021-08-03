@@ -11,9 +11,10 @@
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" class="btn btn-primary" name="submit" value="Login"/>
+        <a
+        class="btn btn-danger"
+        href="{% url 'myapp:forget_password' %}">
+            Forget Password
+        </a>
     </form>
-    <a
-        class="nav-link active"
-        href="{% url 'myapp:forget_password' %}">Forget Password
-    </a>
 {% endblock %}

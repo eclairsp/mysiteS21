@@ -94,32 +94,8 @@
                     {% endif %}
                 </div>
                 {% if user.is_authenticated and request.resolver_match.url_name == "myaccount" %}
-                    <ul class="list-group w-100 list-group-horizontal align-self-start mt-3">
-                        <li class="list-group-item col-3">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Email</div>
-                                {{ user.student.email }}
-                            </div>
-                        </li>
-                        <li class="list-group-item col-3">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Username</div>
-                                {{ user.username }}
-                            </div>
-                        </li>
-                        <li class="list-group-item col-3">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Province</div>
-                                {{ user.student.province }}
-                            </div>
-                        </li>
-                        <li class="list-group-item col-3">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">Level</div>
-                                {{ user.student.level }}
-                            </div>
-                        </li>
-                    </ul>
+                    {% block myaccount %}
+                    {% endblock %}
                 {% endif %}
             </div>
         </div>

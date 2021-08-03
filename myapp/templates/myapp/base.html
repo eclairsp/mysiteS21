@@ -76,7 +76,7 @@
         <span class="navbar-text">
                 {% block myhdg %}
                     Hello
-                    {{ user.get_username|default:"User" }}
+                    {{ user.get_full_name | default:"User" }}
                 {% endblock %}
             </span>
     </div>

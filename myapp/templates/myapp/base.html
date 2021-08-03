@@ -42,8 +42,8 @@
                 {% if not user.is_authenticated %}
                     <li class="nav-item">
                         <a
-                            class="nav-link {% if request.resolver_match.url_name == "login" %} active {% endif %}"
-                            href="{% url 'myapp:login' %}">Login
+                                class="nav-link {% if request.resolver_match.url_name == "login" %} active {% endif %}"
+                                href="{% url 'myapp:login' %}">Login
                         </a>
                     </li>
                 {% endif %}
@@ -51,8 +51,8 @@
                 {% if not user.is_authenticated %}
                     <li class="nav-item">
                         <a
-                            class="nav-link {% if request.resolver_match.url_name == "register" %} active {% endif %}"
-                            href="{% url 'myapp:register' %}">Register
+                                class="nav-link {% if request.resolver_match.url_name == "register" %} active {% endif %}"
+                                href="{% url 'myapp:register' %}">Register
                         </a>
                     </li>
                 {% endif %}
@@ -68,23 +68,35 @@
                 {% endif %}
             </ul>
         </div>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <span class="navbar-brand h1">LearnO</span>
+
     </div>
 </nav>
 <div class="container-fluid container-main d-flex align-items-center justify-content-center mb-3 rounded-circle">
     <div class="col-12 d-flex flex-column justify-content-center">
         <div class="card col-12 shadow-lg mb-3">
-            <div class="card-body">
-                <span class="greeting-text h1">
+            <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                <div class="w-100 d-flex align-items-center justify-content-between">
+                    <span class="greeting-text h1">
                     {% block myhdg %}
                         Hello
-                        {{ user.get_username|default:"User" }}
+                        {{ user.get_full_name|default:"User" }}
                     {% endblock %}
-                </span>
+                    </span>
+                    {% if user.is_authenticated %}
+                        <img class="avatar" src="{{ user.student.picture.url }}"
+                             alt="{{ user.get_full_name|default:"User" }}'s profile photo"/>
+                    {% endif %}
+                </div>
+                {% if user.is_authenticated and request.resolver_match.url_name == "myaccount" %}
+                    {% block myaccount %}
+                    {% endblock %}
+                {% endif %}
             </div>
         </div>
         <div class="card col-12 shadow-lg">

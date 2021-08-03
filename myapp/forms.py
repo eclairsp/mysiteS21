@@ -1,6 +1,4 @@
 from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
 from django.contrib.auth.forms import UserCreationForm
 from myapp.models import Order, Review, Student
 
@@ -38,10 +36,11 @@ class ReviewForm(forms.ModelForm):
 class RegisterForm(UserCreationForm):
     class Meta:
         model = Student
-        fields = ["username", "email", "first_name", "last_name", "address", "interested_in"]
+        fields = ["username", "email", "first_name", "last_name", "address", "picture", "interested_in"]
         widgets = {"interested_in": forms.CheckboxSelectMultiple(), 'email': forms.EmailInput()}
-        labels = {'address': 'City'}
+        labels = {'address': 'City', 'picture': 'Profile Picture'}
 
 
 class ForgetPasswordForm(forms.Form):
     email = forms.EmailField(max_length=100, label='Email address of the account:')
+

@@ -1,13 +1,21 @@
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
+from io import BytesIO
+from PIL import Image
 
 
 def enforce_rating(rating):
     if not 1 <= rating <= 5:
         raise ValidationError("You must enter a rating between 1 and 5!")
+
+
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return 'profile_pics/user_{0}/{1}'.format(instance.id, filename)
 
 
 # Create your models here.
@@ -43,9 +51,20 @@ class Student(User):
     province = models.CharField(max_length=2, default='ON')
     registered_courses = models.ManyToManyField(Course, blank=True)
     interested_in = models.ManyToManyField(Topic)
+    picture = models.ImageField(default='learn-default-profile-pic.jpg', upload_to=user_directory_path)
 
     def __str__(self):
         return "{0} {1} {2}".format(self.id, self.first_name, self.last_name)
+
+    # def save(self, *args, **kwargs):
+    #     with Image.open(self.picture) as im:
+    #         temp = im.resize((300, 300))
+    #         output = BytesIO()
+    #         temp.save(output, format='PNG', quality=85)
+    #         output.seek(0)
+    #         self.picture = InMemoryUploadedFile(output, 'ImageField', "%s.png" % self.picture.name.split('.')[0],
+    #                                             'image/jpeg', output.getbuffer().nbytes, None)
+    #     super(Student, self).save(*args, **kwargs)
 
 
 class Order(models.Model):

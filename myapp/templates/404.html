@@ -1,0 +1,14 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block title %} About page {% endblock %}
+{% block body_block %}
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="w-100 alert alert-danger" role="alert">
+            <h4 class="alert-heading">Not found!</h4>
+            <p>{{ exception }}</p>
+            <hr>
+            <p class="mb-0">{{ request.get_host }}{{ request_path }}</p>
+        </div>
+        <img class="error-page-illustration" src="{% static "myapp/undraw_page_not_found_su7k.svg" %}" alt="Not found error (404)"/>
+    </div>
+{% endblock %}

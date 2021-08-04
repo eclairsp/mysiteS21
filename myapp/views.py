@@ -185,7 +185,7 @@ def user_login(request):
     return response
 
 
-@login_required
+@login_required(login_url='/myapp/login')
 def user_logout(request):
     logout(request)
     return redirect('myapp:index')
@@ -216,7 +216,7 @@ def register(request):
         return render(request, "myapp/register.html", {"form": form})
 
 
-@login_required()
+@login_required(login_url='/myapp/login')
 def myaccount(request):
     courses = []
     interested_in = []

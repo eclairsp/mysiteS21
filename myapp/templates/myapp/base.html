@@ -57,7 +57,7 @@
                     <li class="nav-item">
                         <a
                             class="nav-link {% if request.resolver_match.url_name == "register" %} active {% endif %}"
-                            href="{% url 'myapp:register' %}">Register
+                            href="{% url 'myapp:register' %}">Register Here
                         </a>
                     </li>
                 {% endif %}
@@ -65,7 +65,7 @@
                 {% if user.is_authenticated %}
                     <li class="nav-item"><a
                             class="nav-link {% if request.resolver_match.url_name == "myaccount" %} active {% endif %}"
-                            href="{% url 'myapp:myaccount' %}">Account</a></li>
+                            href="{% url 'myapp:myaccount' %}">My Account</a></li>
                 {% endif %}
 
                 {% if user.is_authenticated %}

@@ -1,0 +1,16 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block title %} About page {% endblock %}
+{% block body_block %}
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="w-100 alert alert-danger" role="alert">
+            <h4 class="alert-heading">Server error</h4>
+            <p>
+                Sorry we messed up! There was a problem at the server!
+            </p>
+            <hr>
+            <p class="mb-0">Go <a href="{% url "myapp:index" %}" class="alert-link">home</a>.</p>
+        </div>
+        <img class="error-page-illustration" src="{% static "myapp/undraw_server_down_s4lk.svg" %}" alt="Server error"/>
+    </div>
+{% endblock %}

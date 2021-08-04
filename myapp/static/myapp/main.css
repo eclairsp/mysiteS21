@@ -63,6 +63,11 @@ th {
     color: #FF5252 !important;
 }
 
+.error-page-illustration {
+    width: 50%;
+    height: auto;
+}
+
 @media (max-width: 991.98px) {
     .navbar-nav {
         flex-direction: column-reverse !important;

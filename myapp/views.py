@@ -153,10 +153,6 @@ def review(request):
 
 
 def user_login(request):
-    if request.method == "GET":
-        next_page = request.GET.get('next', '/')
-        if next_page != '/':
-            request.session['login_from'] = next_page
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         username = request.POST['username']
@@ -169,10 +165,7 @@ def user_login(request):
                     request.session['last_login'] = now().isoformat()
                     request.session.set_expiry(60 * 60)
                     # return redirect("myapp:index")
-                    if 'login_from' in request.session:
-                        return HttpResponseRedirect(request.session['login_from'])
-                    else:
-                        return redirect('myapp:index')
+                    response = redirect('myapp:index')
                 else:
                     response = HttpResponse('Your account is disabled.')
         else:
@@ -192,7 +185,7 @@ def user_login(request):
     return response
 
 
-@login_required
+@login_required(login_url='/myapp/login')
 def user_logout(request):
     logout(request)
     return redirect('myapp:index')
@@ -223,7 +216,7 @@ def register(request):
         return render(request, "myapp/register.html", {"form": form})
 
 
-@login_required(login_url="myapp:login")
+@login_required(login_url='/myapp/login')
 def myaccount(request):
     courses = []
     interested_in = []

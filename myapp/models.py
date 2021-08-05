@@ -51,7 +51,7 @@ class Student(User):
     province = models.CharField(max_length=2, default='ON')
     registered_courses = models.ManyToManyField(Course, blank=True)
     interested_in = models.ManyToManyField(Topic)
-    picture = models.ImageField(default='learn-default-profile-pic.jpg', upload_to=user_directory_path)
+    picture = models.ImageField(upload_to=user_directory_path)
 
     def __str__(self):
         return "{0} {1} {2}".format(self.id, self.first_name, self.last_name)

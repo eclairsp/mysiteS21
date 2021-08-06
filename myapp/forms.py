@@ -34,10 +34,13 @@ class ReviewForm(forms.ModelForm):
 
 
 class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
     class Meta:
         model = Student
         fields = ["username", "email", "first_name", "last_name", "address", "picture", "interested_in"]
-        widgets = {"interested_in": forms.CheckboxSelectMultiple(), 'email': forms.EmailInput()}
+        widgets = {"interested_in": forms.CheckboxSelectMultiple(), 'email': forms.EmailInput(),
+                   'picture': forms.FileInput(attrs={'class': 'your_custom_class'})}
         labels = {'address': 'City', 'picture': 'Profile Picture'}
 
 

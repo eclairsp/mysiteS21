@@ -1,4 +1,4 @@
-html {
+.bg-light-theme {
     background: linear-gradient(#ebf4f5, #b5c6e0);
     background-size: cover;
     background-size: 400% 400%;
@@ -6,6 +6,23 @@ html {
     animation: AnimationName 1s ease infinite;
     min-height: 100vh;
 }
+
+.bg-dark-theme {
+    background: linear-gradient(#454545, #424242);
+    background-size: cover;
+    background-size: 400% 400%;
+
+    animation: AnimationName 1s ease infinite;
+    min-height: 100vh;
+}
+
+
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
 body {
     background: transparent !important;
 }
@@ -21,6 +38,8 @@ body {
 }
 
 .navbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
     font-size: 1.5em;
 }
 

@@ -43,4 +43,3 @@ class RegisterForm(UserCreationForm):
 
 class ForgetPasswordForm(forms.Form):
     email = forms.EmailField(max_length=100, label='Email address of the account:')
-

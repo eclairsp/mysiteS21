@@ -89,7 +89,6 @@
                     {% endblock %}
                     </span>
                     {% if user.is_authenticated %}
-                        {{ user.username }}
                         {% if user.student.picture.url and "learn-default-profile-pic.jpg" not in user.student.picture.url%}
                             <img class="avatar" src="{{ user.student.picture.url }}"
                                  alt="{{ user.get_full_name|default:"User" }}'s profile photo"/>

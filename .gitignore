@@ -1,1 +1,10 @@
+### venv python
+venv/
+
+### python
+__pycache__/
+
+### intellij idea
+.idea/
+
 db.sqlite3

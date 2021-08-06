@@ -89,13 +89,13 @@
                     {% endblock %}
                     </span>
                     {% if user.is_authenticated %}
-
+                        {{ user.username }}
                         {% if user.student.picture.url and "learn-default-profile-pic.jpg" not in user.student.picture.url%}
                             <img class="avatar" src="{{ user.student.picture.url }}"
                                  alt="{{ user.get_full_name|default:"User" }}'s profile photo"/>
                         {% else %}
                             <img class="avatar"
-                                 src="https://robohash.org/{{ user.get_full_name|default:"User" }}?size=100x100&set=set4"
+                                 src="https://robohash.org/{{ user.username|default:"User" }}?size=100x100&set=set4"
                                  alt="{{ user.get_full_name|default:"User" }}'s profile photo"/>
                         {% endif %}
                     {% endif %}

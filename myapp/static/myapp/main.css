@@ -25,6 +25,7 @@
 
 body {
     background: transparent !important;
+    font-family: 'Open Sans', sans-serif !important;
 }
 
 @keyframes AnimationName {
@@ -40,7 +41,7 @@ body {
 .navbar {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
-    font-size: 1.5em;
+    font-size: 1.5em !important;
 }
 
 .navbar-nav {

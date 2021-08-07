@@ -3,8 +3,8 @@
 {% load type %}
 {% block body_block %}
     {% if top_list %}
-        <h2>List of Topics</h2>
-        <ol class="list-group">
+        <h2>Topics</h2>
+        <ol class="list-group mt-3">
             {% for top in top_list %}
                 <li class="list-group-item"><a href="{% url 'myapp:details' topic_id=top.id %}">{{ top.name }}</a></li>
             {% endfor %}
@@ -13,7 +13,7 @@
         <strong>There are no available topics!</strong>
     {% endif %}
     {% if last_login %}
-        <div class="alert alert-info mt-2" role="alert">
+        <div class="alert alert-info mt-3" role="alert">
             Your last login was {{ last_login }}
         </div>
     {% endif %}

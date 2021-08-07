@@ -40,8 +40,23 @@ class RegisterForm(UserCreationForm):
         model = Student
         fields = ["username", "email", "first_name", "last_name", "city", "picture", "interested_in"]
         widgets = {"interested_in": forms.CheckboxSelectMultiple(), 'email': forms.EmailInput(),
-                   'picture': forms.FileInput(attrs={'class': 'your_custom_class'})}
+                   'picture': forms.FileInput()}
         labels = {'picture': 'Profile Picture'}
+
+
+class EditForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['first_name', 'last_name', 'city', 'picture', 'level', 'address']
+        widgets = {
+            'picture': forms.FileInput(),
+            'level': forms.RadioSelect
+        }
+
+        def __init__(self, *args, **kwargs):
+            super(EditForm, self).__init__(*args, **kwargs)
+            self.fields['interested_in'].required = False
+            self.fields['level'].required = False
 
 
 class ForgetPasswordForm(forms.Form):

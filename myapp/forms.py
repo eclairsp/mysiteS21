@@ -38,10 +38,10 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = Student
-        fields = ["username", "email", "first_name", "last_name", "address", "picture", "interested_in"]
+        fields = ["username", "email", "first_name", "last_name", "city", "picture", "interested_in"]
         widgets = {"interested_in": forms.CheckboxSelectMultiple(), 'email': forms.EmailInput(),
                    'picture': forms.FileInput(attrs={'class': 'your_custom_class'})}
-        labels = {'address': 'City', 'picture': 'Profile Picture'}
+        labels = {'picture': 'Profile Picture'}
 
 
 class ForgetPasswordForm(forms.Form):

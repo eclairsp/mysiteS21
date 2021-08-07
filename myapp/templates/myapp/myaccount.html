@@ -12,6 +12,7 @@
     </a>
 {% endblock %}
 {% block myaccount %}
+    {% if not user.is_superuser %}
     <div class="row row-cols-1 row-cols-lg-6 row-cols-md-3 g-1 w-100 mt-3">
         <div class="col">
             <div class="card h-100">
@@ -79,11 +80,12 @@
             </div>
         </div>
     </div>
+    {% endif %}
 {% endblock %}
 {% block body_block %}
     {% if error %}
         <div class="alert alert-danger mb-0" role="alert">
-            <h3 class="text-danger">{{ error }}</h3>
+            <strong>{{ error }}</strong>
         </div>
     {% else %}
         {% if courses %}

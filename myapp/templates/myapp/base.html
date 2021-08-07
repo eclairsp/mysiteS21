@@ -79,11 +79,12 @@
                 {% endif %}
             </ul>
             <div class="d-flex align-items-center">
-                <span class="navbar-text mr-2">
-                    Dark mode
-                </span>
+                <label class="navbar-text mr-2" for="theme-toggler">
+                        Dark mode
+                </label>
                 <div class="form-check form-switch mx-3">
-                    <input id="theme-toggler" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+                    <input id="theme-toggler" name="theme-toggler" class="form-check-input" type="checkbox"
+                           id="flexSwitchCheckDefault"
                             {% if request.COOKIES.theme == "dark" %} checked {% endif %}>
                 </div>
             </div>
@@ -101,43 +102,45 @@
 <div class="container-fluid container-main d-flex align-items-center justify-content-center mb-3 rounded-circle">
     <div class="col-12 d-flex flex-column justify-content-center">
         <div class="card col-12 shadow-lg mb-3">
-            <div class="card-body d-flex flex-column align-items-center justify-content-between">
-                {% if messages %}
-                    {% block toasts %}
-                        {% for message in messages %}
-                            <div class="w-100 alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                                <strong>{{ message }}</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
-                    {% endblock %}
-                {% endif %}
-                <div class="w-100 d-flex align-items-center justify-content-between">
+            {% if not user.is_superuser %}
+                <div class="card-body d-flex flex-column align-items-center">
+                    {% if messages %}
+                        {% block toasts %}
+                            {% for message in messages %}
+                                <div class="w-100 alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                                    <strong>{{ message }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endblock %}
+                    {% endif %}
+                    <div class="w-100 d-flex align-items-center justify-content-between">
                     <span class="greeting-text h1">
                     {% block myhdg %}
                         Hello
                         {{ user.get_full_name|default:"User" }}
                     {% endblock %}
                     </span>
-                    {% if user.is_authenticated %}
-                        <div>
-                            {% if user.student.picture.url and "learn-default-profile-pic.jpg" not in user.student.picture.url %}
-                                <img class="avatar" src="{{ user.student.picture.url }}"
-                                     alt="{{ user.get_full_name|default:"User" }}'s profile photo"/>
-                            {% else %}
-                                <img class="avatar"
-                                     src="https://robohash.org/{{ user.username|default:"User" }}?size=100x100&set=set4"
-                                     alt="{{ user.get_full_name|default:"User" }}'s profile photo"/>
-                            {% endif %}
-                        </div>
+                        {% if user.is_authenticated %}
+                            <div>
+                                {% if user.student.picture.url and "learn-default-profile-pic.jpg" not in user.student.picture.url %}
+                                    <img class="avatar" src="{{ user.student.picture.url }}"
+                                         alt="{{ user.get_full_name|default:"User" }}'s profile photo"/>
+                                {% else %}
+                                    <img class="avatar"
+                                         src="https://robohash.org/{{ user.username|default:"User" }}?size=100x100&set=set4"
+                                         alt="{{ user.get_full_name|default:"User" }}'s profile photo"/>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% if user.is_authenticated and request.resolver_match.url_name == "myaccount" %}
+                        {% block myaccount %}
+                        {% endblock %}
                     {% endif %}
                 </div>
-                {% if user.is_authenticated and request.resolver_match.url_name == "myaccount" %}
-                    {% block myaccount %}
-                    {% endblock %}
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
         <div class="card col-12 shadow-lg">
             <div class="card-body">

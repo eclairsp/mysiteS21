@@ -5,7 +5,7 @@
     {% if errors %}
         <div class="alert alert-danger" role="alert">
             <h4 class="alert-heading">Error</h4>
-            <h5 class="text-danger">{{ errors }}</h5>
+            <strong>{{ errors }}</strong>
         </div>
     {% endif %}
     <form class="review__form" action="{% url 'myapp:review' %}" method="post">

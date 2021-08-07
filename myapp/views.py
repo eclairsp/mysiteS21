@@ -1,8 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect, reverse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
 from .models import Topic, Course, Student, User
@@ -12,6 +11,14 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from datetime import datetime
+
+'''
+To check if user is admin or not
+'''
+
+
+def is_admin(user):
+    return not user.is_superuser
 
 
 # Create your views here.
@@ -84,9 +91,6 @@ def course(request, course_id):
                   {"course": course, "reviews": course.review_set.all(), "students": course.student_set.all()})
 
 
-# topic = Topic.objects.get(id==1).
-
-
 def findcourses(request):
     if request.method == "POST":
         unbound_form = SearchForm()
@@ -135,8 +139,7 @@ def place_order(request):
         return render(request, "myapp/place_order.html", {"form": form})
 
 
-# giving name = " ", because as users specify email while reviewing it could be anyone not necessarily logged in user!
-# so to be consistent can also do in form context 'name': username and it would consistent
+@user_passes_test(is_admin)
 def review(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -234,8 +237,8 @@ def myaccount(request):
     try:
         student = Student.objects.get(pk=student_id)
         # stricter if condition
-        # if request.user.is_authenticated and not request.user.is_staff and not request.user.is_superuser:
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not request.user.is_staff and not request.user.is_superuser:
+            # if request.user.is_authenticated:
             first_name = student.first_name
             last_name = student.last_name
             courses.extend(student.registered_courses.all())
@@ -250,6 +253,7 @@ def myaccount(request):
 
 
 @login_required(login_url='/myapp/login')
+@user_passes_test(is_admin)
 def edit_profile(request):
     if request.method == "POST":
         user = Student.objects.get(id=request.user.id)
@@ -266,6 +270,7 @@ def edit_profile(request):
 
 
 @login_required(login_url='/myapp/login')
+@user_passes_test(is_admin)
 def change_password(request):
     user = Student.objects.get(id=request.user.id)
     if request.method == 'POST':
@@ -281,6 +286,8 @@ def change_password(request):
         form = PasswordChangeForm(user)
         return render(request, "myapp/change_password.html", {'form': form})
 
+
+@user_passes_test(is_admin)
 def forget_password(request):
     help_text = 'Please enter the email of your account and we will send you a new password.'
 

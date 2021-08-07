@@ -5,7 +5,7 @@ from .models import Topic, Course, Student, Order, Review
 class CourseAdmin(admin.ModelAdmin):
     fields = [('title', 'topic'), ('price', 'num_reviews', 'for_everyone')]
     list_display = ('title', 'topic', 'price', 'hours', 'for_everyone')
-    actions = ['add_50_to_hours']
+    actions = ['add_10_to_hours']
 
     @admin.action(description='Add 10 hours to the Course length')
     def add_10_to_hours(self, request, queryset):
@@ -19,7 +19,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'upper_case_name', 'province')
+    list_display = ('first_name', 'last_name', 'upper_case_name', 'city')
 
     def upper_case_name(self, obj):
         return '{0} {1}'.format(obj.first_name.upper(), obj.last_name.upper())

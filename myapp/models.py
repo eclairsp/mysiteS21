@@ -49,6 +49,7 @@ class Student(User):
     ]
     level = models.CharField(choices=LVL_CHOICES, max_length=2, default='HS')
     address = models.CharField(max_length=300, blank=True)
+    city = models.CharField(max_length=150, blank=True)
     province = models.CharField(max_length=2, default='ON')
     registered_courses = models.ManyToManyField(Course, blank=True)
     interested_in = models.ManyToManyField(Topic)

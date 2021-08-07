@@ -2,7 +2,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MaxLengthValidator
 from django.core.exceptions import ValidationError
 from io import BytesIO
 
@@ -29,9 +29,11 @@ class Topic(models.Model):
 class Course(models.Model):
     title = models.CharField(max_length=200)
     topic = models.ForeignKey(Topic, related_name='courses', on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(100),
+                                                                             MaxValueValidator(200)])
+    hours = models.PositiveIntegerField(default=0)
     for_everyone = models.BooleanField(default=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, validators=[MaxLengthValidator(300)])
     num_reviews = models.PositiveIntegerField(default=0)
 
     def __str__(self):

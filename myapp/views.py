@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
 from .models import Topic, Course, Student, User
-from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm, ForgetPasswordForm, EditForm
+from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm, ForgetPasswordForm, EditForm, AdminOrderForm
 import hashlib
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -118,11 +118,18 @@ def findcourses(request):
 def place_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
+        if request.user.is_superuser:
+            form = AdminOrderForm(request.POST)
+
         if form.is_valid():
             courses = form.cleaned_data['courses']
             order = form.save(commit=False)
-            student = Student.objects.get(id=request.user.id)
-            order.student_id = request.user.id
+
+            if request.user.is_superuser:
+                student = order.student
+            else:
+                student = Student.objects.get(id=request.user.id)
+                order.student_id = request.user.id
             status = order.order_status
             order.save()
             form.save_m2m()
@@ -138,6 +145,9 @@ def place_order(request):
             return render(request, "myapp/place_order.html", {"form": form})
     else:
         form = OrderForm()
+        if request.user.is_superuser:
+            form = AdminOrderForm()
+
         return render(request, "myapp/place_order.html", {"form": form})
 
 

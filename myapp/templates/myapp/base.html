@@ -40,10 +40,12 @@
                         href="{% url 'myapp:find_courses' %}">Find Courses</a>
                 </li>
 
-                <li class="nav-item"><a
-                        class="nav-link {% if request.resolver_match.url_name == "place_order" %} active {% endif %}"
-                        href="{% url 'myapp:place_order' %}">Place Order</a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a
+                            class="nav-link {% if request.resolver_match.url_name == "place_order" %} active {% endif %}"
+                            href="{% url 'myapp:place_order' %}">Place Order</a>
+                    </li>
+                {% endif %}
 
                 <li class="nav-item"><a
                         class="nav-link {% if request.resolver_match.url_name == "review" %} active {% endif %}"

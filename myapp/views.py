@@ -114,13 +114,15 @@ def findcourses(request):
         return render(request, "myapp/findcourses.html", {"form": form})
 
 
+@login_required(login_url='/myapp/login')
 def place_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             courses = form.cleaned_data['courses']
             order = form.save(commit=False)
-            student = order.student
+            student = Student.objects.get(id=request.user.id)
+            order.student_id = request.user.id
             status = order.order_status
             order.save()
             form.save_m2m()

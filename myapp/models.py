@@ -73,7 +73,7 @@ class Order(models.Model):
     ORD_STATUS_CHOICES = [(0, 'Cancelled'), (1, 'Confirmed'), (2, 'On Hold')]
     courses = models.ManyToManyField(Course)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    order_status = models.IntegerField(choices=ORD_STATUS_CHOICES, default=1)
+    order_status = models.IntegerField(choices=ORD_STATUS_CHOICES, default=2)
     order_date = models.DateField(default=now)
 
     def __str__(self):

@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
-from .models import Topic, Course, Student, User
+from .models import Topic, Course, Student, User, Order
 from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm, ForgetPasswordForm, EditForm, AdminOrderForm
 import hashlib
 from django.contrib import messages
@@ -130,7 +130,8 @@ def place_order(request):
             else:
                 student = Student.objects.get(id=request.user.id)
                 order.student_id = request.user.id
-            status = order.order_status
+            status = 1
+            order.order_status = status
             order.save()
             form.save_m2m()
             if status == 1:
@@ -255,9 +256,11 @@ def myaccount(request):
             last_name = student.last_name
             courses.extend(student.registered_courses.all())
             interested_in.extend(student.interested_in.all())
+            orders = Order.objects.filter(student_id=student_id).all()
+            # print(orders[0].courses.all())
             return render(request, "myapp/myaccount.html",
                           {'first_name': first_name, 'last_name': last_name, 'courses': courses,
-                           'interested_in': interested_in})
+                           'interested_in': interested_in, 'orders': orders})
         else:
             return render(request, "myapp/myaccount.html", {'error': 'You are not a registered student!'})
     except Student.DoesNotExist:

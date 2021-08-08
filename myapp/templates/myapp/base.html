@@ -45,10 +45,12 @@
                         href="{% url 'myapp:place_order' %}">Place Order</a>
                 </li>
 
-                <li class="nav-item"><a
-                        class="nav-link {% if request.resolver_match.url_name == "review" %} active {% endif %}"
-                        href="{% url 'myapp:review' %}">Review</a>
-                </li>
+                {% if not user.is_superuser %}
+                    <li class="nav-item"><a
+                            class="nav-link {% if request.resolver_match.url_name == "review" %} active {% endif %}"
+                            href="{% url 'myapp:review' %}">Review</a>
+                    </li>
+                {% endif %}
 
                 {% if not user.is_authenticated %}
                     <li class="nav-item">

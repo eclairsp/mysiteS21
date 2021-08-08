@@ -1,0 +1,11 @@
+{% extends 'myapp/base.html' %}
+{% load crispy_forms_tags %}
+{% block body_block %}
+    <h2>Edit Profile</h2>
+    <a class="btn btn-primary w-100 my-3" href="{% url "myapp:change_password" %}">Change Password</a>
+    <form action="{% url 'myapp:edit_profile' %}" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-primary" name="submit" value="Submit"/>
+    </form>
+{% endblock %}

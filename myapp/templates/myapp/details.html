@@ -2,8 +2,8 @@
 {% block body_block %}
     <h2>{{ topic.name }} - {{ topic.length }} weeks</h2>
     {% if course_list %}
-        <h3>Courses in the topic</h3>
-        <table class="table border">
+        <h3 class="mt-3">Courses in the topic</h3>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Course</th>
@@ -23,7 +23,7 @@
         <strong>There are no available topics!</strong>
     {% endif %}
     {% if students %}
-        <h3>Students interested in the Topic</h3>
+        <h3 class="mt-3">Students interested in the Topic</h3>
         <div class="row">
             <div>
                 <ol class="list-group">

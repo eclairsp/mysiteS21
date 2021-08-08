@@ -1,15 +1,24 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect, reverse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
 from .models import Topic, Course, Student, User
-from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm, ForgetPasswordForm
+from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm, ForgetPasswordForm, EditForm
 import hashlib
+from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from datetime import datetime
+
+'''
+To check if user is admin or not
+'''
+
+
+def is_admin(user):
+    return not user.is_superuser
 
 
 # Create your views here.
@@ -33,7 +42,7 @@ from datetime import datetime
 
 def index(request):
     last_login = "at {} UTC".format(datetime.fromisoformat(request.session[
-        'last_login'])) if 'last_login' in request.session else "more than one hour ago"
+                                                               'last_login'])) if 'last_login' in request.session else "more than one hour ago"
     top_list = Topic.objects.all().order_by('id')[:10]
     return render(request, 'myapp/index.html', {'top_list': top_list, 'last_login': last_login})
 
@@ -80,9 +89,6 @@ def course(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     return render(request, "myapp/course.html",
                   {"course": course, "reviews": course.review_set.all(), "students": course.student_set.all()})
-
-
-# topic = Topic.objects.get(id==1).
 
 
 def findcourses(request):
@@ -133,8 +139,7 @@ def place_order(request):
         return render(request, "myapp/place_order.html", {"form": form})
 
 
-# giving name = " ", because as users specify email while reviewing it could be anyone not necessarily logged in user!
-# so to be consistent can also do in form context 'name': username and it would consistent
+@user_passes_test(is_admin)
 def review(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -176,7 +181,7 @@ def user_login(request):
                 else:
                     response = HttpResponse('Your account is disabled.')
         else:
-            response = render(request, "myapp/login.html", {'form': form, "errors": " "})
+            response = render(request, "myapp/login.html", {'form': form, "errors": form.errors})
     else:
         '''
         used the built in django login form.
@@ -232,8 +237,8 @@ def myaccount(request):
     try:
         student = Student.objects.get(pk=student_id)
         # stricter if condition
-        # if request.user.is_authenticated and not request.user.is_staff and not request.user.is_superuser:
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not request.user.is_staff and not request.user.is_superuser:
+            # if request.user.is_authenticated:
             first_name = student.first_name
             last_name = student.last_name
             courses.extend(student.registered_courses.all())
@@ -247,6 +252,42 @@ def myaccount(request):
         return render(request, "myapp/myaccount.html", {'error': 'You are not a registered student!'})
 
 
+@login_required(login_url='/myapp/login')
+@user_passes_test(is_admin)
+def edit_profile(request):
+    if request.method == "POST":
+        user = Student.objects.get(id=request.user.id)
+        form = EditForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Updated {}'s profile".format(request.user.username))
+            return redirect("myapp:myaccount")
+        else:
+            return render(request, "myapp/edit_profile.html", {"form": form})
+    else:
+        form = EditForm(instance=request.user)
+        return render(request, "myapp/edit_profile.html", {"form": form})
+
+
+@login_required(login_url='/myapp/login')
+@user_passes_test(is_admin)
+def change_password(request):
+    user = Student.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        form = PasswordChangeForm(user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('myapp:myaccount')
+        else:
+            return render(request, "myapp/change_password.html", {'form': form})
+    else:
+        form = PasswordChangeForm(user)
+        return render(request, "myapp/change_password.html", {'form': form})
+
+
+@user_passes_test(is_admin)
 def forget_password(request):
     help_text = 'Please enter the email of your account and we will send you a new password.'
 
@@ -265,12 +306,12 @@ def forget_password(request):
                 hash_password = hashlib.sha224(random_string.encode()).hexdigest()[:16]
 
                 email_subject = 'Password Reset'
-                email_message = "Dear " + target_user.username + ",\n\n"\
-                                + "Your new password is:\n"\
-                                + hash_password + "\n"\
-                                + "Please log in and change your password.\n"\
-                                + "Have a very nice day!\n\n"\
-                                + "Best Regards,\n"\
+                email_message = "Dear " + target_user.username + ",\n\n" \
+                                + "Your new password is:\n" \
+                                + hash_password + "\n" \
+                                + "Please log in and change your password.\n" \
+                                + "Have a very nice day!\n\n" \
+                                + "Best Regards,\n" \
                                 + "Comp8347 Group 9"
                 sender = 'noreply@comp8347group9project.com'
                 receiver_list = [request_email]
@@ -288,13 +329,14 @@ def forget_password(request):
                 return response
 
             except:
-                response = render(request, "myapp/forget_password.html", {"form": form, 'helptext': help_text, "local_forgetPassword_msg": "Invalid email"})
+                response = render(request, "myapp/forget_password.html",
+                                  {"form": form, 'helptext': help_text, "local_forgetPassword_msg": "Invalid email"})
                 return response
 
-        response = render(request, "myapp/forget_password.html", {"form": form, 'helptext': help_text, "local_forgetPassword_msg": "Invalid form. Try again!"})
+        response = render(request, "myapp/forget_password.html",
+                          {"form": form, 'helptext': help_text, "local_forgetPassword_msg": "Invalid form. Try again!"})
         return response
 
     else:
         form = ForgetPasswordForm()
         return render(request, "myapp/forget_password.html", {"form": form, 'helptext': help_text})
-

@@ -4,8 +4,8 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.timezone import now
-from .models import Topic, Course, Student, User
-from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm, ForgetPasswordForm, EditForm
+from .models import Topic, Course, Student, User, Order
+from .forms import SearchForm, OrderForm, ReviewForm, RegisterForm, ForgetPasswordForm, EditForm, AdminOrderForm
 import hashlib
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -114,14 +114,24 @@ def findcourses(request):
         return render(request, "myapp/findcourses.html", {"form": form})
 
 
+@login_required(login_url='/myapp/login')
 def place_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
+        if request.user.is_superuser:
+            form = AdminOrderForm(request.POST)
+
         if form.is_valid():
             courses = form.cleaned_data['courses']
             order = form.save(commit=False)
-            student = order.student
-            status = order.order_status
+
+            if request.user.is_superuser:
+                student = order.student
+            else:
+                student = Student.objects.get(id=request.user.id)
+                order.student_id = request.user.id
+            status = 1
+            order.order_status = status
             order.save()
             form.save_m2m()
             if status == 1:
@@ -136,6 +146,9 @@ def place_order(request):
             return render(request, "myapp/place_order.html", {"form": form})
     else:
         form = OrderForm()
+        if request.user.is_superuser:
+            form = AdminOrderForm()
+
         return render(request, "myapp/place_order.html", {"form": form})
 
 
@@ -243,9 +256,11 @@ def myaccount(request):
             last_name = student.last_name
             courses.extend(student.registered_courses.all())
             interested_in.extend(student.interested_in.all())
+            orders = Order.objects.filter(student_id=student_id).all()
+            # print(orders[0].courses.all())
             return render(request, "myapp/myaccount.html",
                           {'first_name': first_name, 'last_name': last_name, 'courses': courses,
-                           'interested_in': interested_in})
+                           'interested_in': interested_in, 'orders': orders})
         else:
             return render(request, "myapp/myaccount.html", {'error': 'You are not a registered student!'})
     except Student.DoesNotExist:

@@ -1,5 +1,6 @@
 {% extends 'myapp/base.html' %}
 {% load level_choices %}
+{% load order_status %}
 {% block myhdg %}
     {{ block.super }}
     <a href="{% url "myapp:edit_profile" %}" title="Edit profile" data-bs-toggle="tooltip" data-bs-placement="right">
@@ -89,7 +90,7 @@
         </div>
     {% else %}
         {% if courses %}
-            <h3>List of Courses registered in</h3>
+            <h3>Courses registered in</h3>
             <table class="table">
                 <thead>
                 <tr>
@@ -113,7 +114,7 @@
         {% endif %}
 
         {% if interested_in %}
-            <h3>List of Topics interested in</h3>
+            <h3>Topics interested in</h3>
             <table class="table">
                 <thead>
                 <tr>
@@ -133,6 +134,38 @@
         {% else %}
             <div class="alert alert-warning" role="alert">
                 No topics interested in!
+            </div>
+        {% endif %}
+
+        {% if orders %}
+            <h3>Orders placed</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Courses</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>
+                            {% for name in order.courses.all %}
+                                <a href="{% url "myapp:course" course_id=name.id %}">{{ name.title }}</a> |
+                            {% endfor %}
+                        </td>
+                        <td> {{ order.order_date }} </td>
+                        <td> {{ order.order_status|status }} </td>
+                        <td> {{ order.total_cost }} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                No orders placed!
             </div>
         {% endif %}
     {% endif %}

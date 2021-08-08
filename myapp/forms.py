@@ -19,9 +19,8 @@ class SearchForm(forms.Form):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['courses', 'student', 'order_status']
+        fields = ['courses', 'order_status']
         widgets = {'courses': forms.CheckboxSelectMultiple(), 'order_type': forms.RadioSelect()}
-        labels = {'student': u'Student Name'}
 
 
 class ReviewForm(forms.ModelForm):

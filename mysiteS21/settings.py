@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-i-wkcj25bxp@qz5akoud&vowgswdk*4m5hn_k@6qxp1x6t4hdb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -161,3 +161,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
+FIXTURE_DIRS = (
+    join(BASE_DIR, 'fixtures'),
+)

@@ -1,5 +1,6 @@
 {% extends 'myapp/base.html' %}
 {% load crispy_forms_tags %}
+{% block title %} Find Courses {% endblock %}
 {% block body_block %}
             <form class="search--form" action="{% url 'myapp:find_courses' %}" method="post">
                 {% csrf_token %}

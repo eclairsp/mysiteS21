@@ -1,5 +1,6 @@
 {% extends 'myapp/base.html' %}
 {% load crispy_forms_tags %}
+{% block title %} Register {% endblock %}
 {% block body_block %}
     <form class="register__form" action="{% url 'myapp:register' %}" enctype="multipart/form-data" method="post">
         {% csrf_token %}

@@ -1,5 +1,6 @@
 {#{% extends 'myapp/base.html' %}#}
 {% extends "myapp/findcourses.html" %}
+{% block title %} Course search results {% endblock %}
 {% block myhdg %}
     {% if user.is_authenticated %}
         Hello {{ name|default:user.get_username }}

@@ -1,6 +1,7 @@
 {% extends 'myapp/base.html' %}
 {% load level_choices %}
 {% load order_status %}
+{% block title %} {{ user.username }}'s Profile {% endblock %}
 {% block myhdg %}
     {{ block.super }}
     <a href="{% url "myapp:edit_profile" %}" title="Edit profile" data-bs-toggle="tooltip" data-bs-placement="right">

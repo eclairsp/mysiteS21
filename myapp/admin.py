@@ -3,7 +3,7 @@ from .models import Topic, Course, Student, Order, Review
 
 
 class CourseAdmin(admin.ModelAdmin):
-    fields = [('title', 'topic'), ('price', 'num_reviews', 'for_everyone')]
+    fields = [('title', 'topic'), ('price', 'num_reviews', 'for_everyone'), ('hours', 'description')]
     list_display = ('title', 'topic', 'price', 'hours', 'for_everyone')
     actions = ['add_10_to_hours']
 

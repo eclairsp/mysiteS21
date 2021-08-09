@@ -77,7 +77,7 @@ In order to enable this function, the following steps should be taken:
 
    * Comment out the part after it "env = environ.Env() ... env("EMAIL_HOST_PASSWORD")" [line 56](https://github.com/eclairsp/mysiteS21/blob/c68c0a9453f08ed1902234a4157645c5d98cd9ea/mysiteS21/settings.py#L56) to [line 64](https://github.com/eclairsp/mysiteS21/blob/c68c0a9453f08ed1902234a4157645c5d98cd9ea/mysiteS21/settings.py#L64)
 
-You can also add .env file in mysiteS21/mysiteS21/ directory with two parameters, EMAIL_HOST_USER and EMAIL_HOST_PASSWORD
+You can also add .env file in mysiteS21 (same directory as the [settings.py](mysiteS21/settings.py) file) directory with two parameters, EMAIL_HOST_USER and EMAIL_HOST_PASSWORD
    * you can create your own .env file with these two parameters
    * set EMAIL_HOST_USER=yougmail@gmail.com
    * set EMAIL_HOST_PASSWORD=yourpassword

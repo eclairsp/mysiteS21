@@ -1,5 +1,6 @@
 {% extends 'myapp/base.html' %}
 {% load crispy_forms_tags %}
+{% block title %} Login {% endblock %}
 {% block body_block %}
     {% if request.COOKIES.forgetPassword_msg %}
         <div class="w-100 alert alert-success alert-dismissible fade show" role="alert">

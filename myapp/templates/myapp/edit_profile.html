@@ -1,5 +1,6 @@
 {% extends 'myapp/base.html' %}
 {% load crispy_forms_tags %}
+{% block title %} Edit {{ user.username }}'s profile {% endblock %}
 {% block body_block %}
     <h2>Edit Profile</h2>
     <a class="btn btn-primary my-3" href="{% url "myapp:change_password" %}">Click here if you want to Change Password</a>

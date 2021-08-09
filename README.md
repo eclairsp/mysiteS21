@@ -61,6 +61,10 @@ python manage.py migrate
 python manage.py loaddata db.json
 ```
 > Here [db.json](fixtures/db.json) is the file located in the fixtures folder 
+- Run the project
+```
+python managge.py runserver
+```
 ## Guide for sending email
 
 This is the installation guide for sending email function.

@@ -55,7 +55,7 @@
                 <h5 class="card-header">City</h5>
                 <div class="card-body">
                     <h6 class="card-subtitle mb-2">
-                        {{ user.city|default:"Not provided!" }}
+                        {{ user.student.city|default:"Not provided!" }}
                     </h6>
                 </div>
             </div>
@@ -109,7 +109,7 @@
             </table>
         {% else %}
             <div class="alert alert-warning" role="alert">
-                No courses registered in!
+                <strong>No courses registered in!</strong>
             </div>
         {% endif %}
 
@@ -133,7 +133,7 @@
             </table>
         {% else %}
             <div class="alert alert-warning" role="alert">
-                No topics interested in!
+                <strong>No topics interested in!</strong>
             </div>
         {% endif %}
 
@@ -165,7 +165,7 @@
             </table>
         {% else %}
             <div class="alert alert-warning" role="alert">
-                No orders placed!
+                <strong>No orders placed!</strong>
             </div>
         {% endif %}
     {% endif %}

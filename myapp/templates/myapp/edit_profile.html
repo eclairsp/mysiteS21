@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block body_block %}
     <h2>Edit Profile</h2>
-    <a class="btn btn-primary w-100 my-3" href="{% url "myapp:change_password" %}">Change Password</a>
+    <a class="btn btn-primary my-3" href="{% url "myapp:change_password" %}">Click here if you want to Change Password</a>
     <form action="{% url 'myapp:edit_profile' %}" enctype="multipart/form-data" method="post">
         {% csrf_token %}
         {{ form|crispy }}

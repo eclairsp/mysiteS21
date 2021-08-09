@@ -62,7 +62,6 @@ class EditForm(forms.ModelForm):
 
         def __init__(self, *args, **kwargs):
             super(EditForm, self).__init__(*args, **kwargs)
-            self.fields['interested_in'].required = False
             self.fields['level'].required = False
 
 

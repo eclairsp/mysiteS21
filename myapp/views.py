@@ -10,14 +10,17 @@ import hashlib
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from datetime import datetime
+from datetime import datetime, timezone
 
-'''
-To check if user is admin or not
-'''
+
+def utc_to_local(utc_dt):
+    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
 
 def is_admin(user):
+    """
+    To check if user is admin or not
+    """
     return not user.is_superuser
 
 
@@ -41,8 +44,9 @@ def is_admin(user):
 
 
 def index(request):
-    last_login = "at {} UTC".format(datetime.fromisoformat(request.session[
-                                                               'last_login'])) if 'last_login' in request.session else "more than one hour ago"
+    last_login = "at {}".format(utc_to_local(datetime.fromisoformat(request.session[
+                                                                        'last_login'])).strftime(
+        "%m/%d/%Y, %H:%M:%S")) if 'last_login' in request.session else "more than one hour ago"
     top_list = Topic.objects.all().order_by('id')[:10]
     return render(request, 'myapp/index.html', {'top_list': top_list, 'last_login': last_login})
 
@@ -270,8 +274,8 @@ def myaccount(request):
 @login_required(login_url='/myapp/login')
 @user_passes_test(is_admin)
 def edit_profile(request):
+    user = Student.objects.get(id=request.user.id)
     if request.method == "POST":
-        user = Student.objects.get(id=request.user.id)
         form = EditForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
@@ -280,7 +284,7 @@ def edit_profile(request):
         else:
             return render(request, "myapp/edit_profile.html", {"form": form})
     else:
-        form = EditForm(instance=request.user)
+        form = EditForm(instance=user)
         return render(request, "myapp/edit_profile.html", {"form": form})
 
 

@@ -20,7 +20,9 @@
             </tbody>
         </table>
     {% else %}
-        <strong>There are no available topics!</strong>
+        <div class="alert alert-warning mt-3" role="alert">
+            <strong>There are no available courses!</strong>
+        </div>
     {% endif %}
     {% if students %}
         <h3 class="mt-3">Students interested in the Topic</h3>
@@ -35,6 +37,8 @@
         </div>
 
     {% else %}
-        <h3>No students registered yet!</h3>
+        <div class="alert alert-warning mt-3" role="alert">
+            <strong>No student has shown interest yet!</strong>
+        </div>
     {% endif %}
 {% endblock %}

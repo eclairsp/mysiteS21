@@ -83,11 +83,11 @@
                 {% endif %}
             </ul>
             <div class="d-flex align-items-center">
-                <label class="navbar-text mr-2" for="theme-toggler">
+                <label class="navbar-text mr-2 theme" for="theme-toggler">
                         Dark mode
                 </label>
                 <div class="form-check form-switch mx-3">
-                    <input id="theme-toggler" name="theme-toggler" class="form-check-input" type="checkbox"
+                    <input id="theme-toggler" name="theme-toggler" class="form-check-input theme" type="checkbox"
                            id="flexSwitchCheckDefault"
                             {% if request.COOKIES.theme == "dark" %} checked {% endif %}>
                 </div>
@@ -99,14 +99,14 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <span class="navbar-brand h1">LearnO</span>
+        <a href="{% url "myapp:index" %}" class="navbar-brand h1">LearnO</a>
 
     </div>
 </nav>
 <div class="container-fluid container-main d-flex align-items-center justify-content-center mb-3 rounded-circle">
     <div class="col-12 d-flex flex-column justify-content-center">
-        <div class="card col-12 shadow-lg mb-3">
-            {% if not user.is_superuser %}
+        {% if not user.is_superuser %}
+            <div class="card col-12 shadow-lg mb-3">
                 <div class="card-body d-flex flex-column align-items-center">
                     {% if messages %}
                         {% block toasts %}
@@ -144,8 +144,8 @@
                         {% endblock %}
                     {% endif %}
                 </div>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
         <div class="card col-12 shadow-lg">
             <div class="card-body">
                 {% block body_block %}  {% endblock %}

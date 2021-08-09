@@ -19,7 +19,7 @@
         </ol>
     {% else %}
         <div class="alert alert-warning mt-3" role="alert">
-            No students registered yet!
+            <strong>No students registered yet!</strong>
         </div>
     {% endif %}
     {#    {% if reviews %}#}
@@ -96,7 +96,7 @@
         </ol>
     {% else %}
         <div class="alert alert-warning mt-3" role="alert">
-            No reviews yet! <a href="{% url "myapp:review" %}" class="alert-link">Add a review</a>.
+            <strong>No reviews yet! <a href="{% url "myapp:review" %}" class="alert-link">Add a review</a>.</strong>
         </div>
     {% endif %}
 {% endblock %}

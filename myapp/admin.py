@@ -19,7 +19,17 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'upper_case_name', 'city')
+    list_display = ('upper_case_first_name', 'upper_case_last_name', 'upper_case_name', 'city')
+
+    def upper_case_first_name(self, obj):
+        return obj.first_name.upper()
+
+    upper_case_first_name.short_description = 'First Name'
+
+    def upper_case_last_name(self, obj):
+        return obj.last_name.upper()
+
+    upper_case_last_name.short_description = 'Last Name'
 
     def upper_case_name(self, obj):
         return '{0} {1}'.format(obj.first_name.upper(), obj.last_name.upper())
